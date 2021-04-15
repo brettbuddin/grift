@@ -24,7 +24,7 @@ authors = ["Brett Buddin"]
 samplerate = 48000
 
 // (Optional) Bit Rate (constant) for the output. Default is 128.
-samplerate = 256
+bitrate = 256
 
 // (Optional) Separator between parts of the episode. This file will be played
 // each time a chapter begins. Path can be relative or absolute.
