@@ -58,13 +58,13 @@ func run(env ffmpeg.Environment, outFile, manifestFile string) error {
 	if err != nil {
 		return fmt.Errorf("parse manifest: %s", err)
 	}
-	if err := validate(env, episode); err != nil {
-		return fmt.Errorf("validate: %s", err)
-	}
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
+	if err := validate(ctx, env, episode); err != nil {
+		return fmt.Errorf("validate: %s", err)
+	}
 	tmpOut, err := ffmpeg.Composite(ctx, env, episode)
 	if err != nil {
 		return fmt.Errorf("composite: %s", err)
@@ -75,7 +75,7 @@ func run(env ffmpeg.Environment, outFile, manifestFile string) error {
 	return nil
 }
 
-func validate(env ffmpeg.Environment, episode manifest.Episode) error {
+func validate(ctx context.Context, env ffmpeg.Environment, episode manifest.Episode) error {
 	if episode.Title == "" {
 		return fmt.Errorf("episode title is required")
 	}
@@ -91,7 +91,7 @@ func validate(env ffmpeg.Environment, episode manifest.Episode) error {
 		return fmt.Errorf("episode album is required")
 	}
 	if episode.Marker != "" {
-		result, err := ffmpeg.Inspect(env, episode.Marker)
+		result, err := ffmpeg.Inspect(ctx, env, episode.Marker)
 		if err != nil {
 			return fmt.Errorf("inspect %q: %s", err)
 		}
@@ -100,7 +100,7 @@ func validate(env ffmpeg.Environment, episode manifest.Episode) error {
 		}
 	}
 	for _, ch := range episode.Chapters {
-		result, err := ffmpeg.Inspect(env, ch.Filename)
+		result, err := ffmpeg.Inspect(ctx, env, ch.Filename)
 		if err != nil {
 			return fmt.Errorf("inspect %q: %s", err)
 		}

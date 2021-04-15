@@ -141,7 +141,7 @@ func prepareChapters(ctx context.Context, env Environment, chapters ...manifest.
 		if err != nil {
 			return nil, err
 		}
-		info, err := Inspect(env, prepared)
+		info, err := Inspect(ctx, env, prepared)
 		if err != nil {
 			return nil, err
 		}
@@ -170,7 +170,7 @@ func prepareMarker(ctx context.Context, env Environment, file string) (wavSegmen
 	if err != nil {
 		return wavSegment{}, err
 	}
-	info, err := Inspect(env, prepared)
+	info, err := Inspect(ctx, env, prepared)
 	if err != nil {
 		return wavSegment{}, err
 	}

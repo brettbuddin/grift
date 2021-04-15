@@ -2,6 +2,7 @@ package ffmpeg
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"os/exec"
@@ -10,7 +11,7 @@ import (
 )
 
 // Inspect runs ffprobe on a file
-func Inspect(env Environment, filename string) (ProbeResult, error) {
+func Inspect(ctx context.Context, env Environment, filename string) (ProbeResult, error) {
 	buf := bytes.NewBuffer(nil)
 	args := []string{
 		"-hide_banner",
@@ -21,7 +22,7 @@ func Inspect(env Environment, filename string) (ProbeResult, error) {
 		filename,
 	}
 	fmt.Fprintf(env.Writer, "%s %s\n", env.Commands.FFProbe, strings.Join(args, " "))
-	cmd := exec.Command(env.Commands.FFProbe, args...)
+	cmd := exec.CommandContext(ctx, env.Commands.FFProbe, args...)
 	cmd.Stdout = buf
 	cmd.Stderr = env.ErrWriter
 	if err := cmd.Run(); err != nil {
