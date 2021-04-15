@@ -50,8 +50,7 @@ func joinChapters(ctx context.Context, env Environment, episode manifest.Episode
 			return "", nil, fmt.Errorf("prepare marker: %s", err)
 		}
 		for _, chs := range chapterSegments {
-			segments = append(segments, marker)
-			segments = append(segments, chs)
+			segments = append(segments, marker, chs)
 		}
 	} else {
 		for _, chs := range chapterSegments {
