@@ -33,6 +33,7 @@ func NewEnvironment() (Environment, error) {
 	}, nil
 }
 
+// Cleanup removes any temporary files used to produce the output
 func (e Environment) Cleanup() error {
 	return os.RemoveAll(e.WorkspaceDir)
 }

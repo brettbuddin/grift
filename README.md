@@ -42,6 +42,12 @@ chapter "ZOOM0013_TrLR.WAV" {
 
     // (Optional) Gain to be applied to this chapter in dB.
     gain = -2
+
+    // (Optional) Start position in seconds
+    start = 3
+
+    // (Optional) Stop position in seconds
+    stop = 8
 }
 
 // (Optional) Normalization options. Search the internet for recommendations for
