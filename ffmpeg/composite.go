@@ -125,7 +125,7 @@ func prepareChapters(ctx context.Context, env Environment, chapters ...manifest.
 	var segments []wavSegment
 	for i, ch := range chapters {
 		prepared := filepath.Join(env.WorkspaceDir, fmt.Sprintf("%d.wav", i))
-		err := ffmpeg(ctx, env,
+		args := []string{
 			"-hide_banner",
 			"-y",
 			"-i",
@@ -136,8 +136,14 @@ func prepareChapters(ctx context.Context, env Environment, chapters ...manifest.
 			"48000",
 			"-filter:a",
 			fmt.Sprintf("volume=%.2fdB", ch.Gain),
-			prepared,
-		)
+		}
+		if ch.Start != nil {
+			args = append(args, "-ss", fmt.Sprintf("%f", *ch.Start))
+		}
+		if ch.Stop != nil {
+			args = append(args, "-to", fmt.Sprintf("%f", *ch.Stop))
+		}
+		err := ffmpeg(ctx, env, append(args, prepared)...)
 		if err != nil {
 			return nil, err
 		}

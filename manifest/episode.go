@@ -41,7 +41,9 @@ type Normalize struct {
 }
 
 type Chapter struct {
-	Filename string  `hcl:",label"`
-	Title    string  `hcl:"title"`
-	Gain     float64 `hcl:"gain,optional"`
+	Filename string   `hcl:",label"`
+	Title    string   `hcl:"title"`
+	Gain     float64  `hcl:"gain,optional"`
+	Start    *float64 `hcl:"start,optional"`
+	Stop     *float64 `hcl:"stop,optional"`
 }
