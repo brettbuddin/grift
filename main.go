@@ -96,13 +96,13 @@ func validate(ctx context.Context, env ffmpeg.Environment, episode manifest.Epis
 			return fmt.Errorf("inspect %q: %s", episode.Marker, err)
 		}
 		if err := validateFile(result); err != nil {
-			return fmt.Errorf("validate marker: %s", episode.Marker, err)
+			return fmt.Errorf("validate marker %q: %s", episode.Marker, err)
 		}
 	}
 	for _, ch := range episode.Chapters {
 		result, err := ffmpeg.Inspect(ctx, env, ch.Filename)
 		if err != nil {
-			return fmt.Errorf("inspect %q: %s", err)
+			return fmt.Errorf("inspect %q: %s", ch.Filename, err)
 		}
 		if err := validateFile(result); err != nil {
 			return fmt.Errorf("validate %q: %s", ch.Title, err)
