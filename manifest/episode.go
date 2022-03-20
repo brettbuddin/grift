@@ -20,6 +20,23 @@ func Parse(filename string) (Episode, error) {
 	if m.Bitrate == 0 {
 		m.Bitrate = 128
 	}
+	for i, ch := range m.Chapters {
+		if ch.Filename == "" {
+			return Episode{}, fmt.Errorf("chapter %d: filename is empty", i)
+		}
+		if ch.Title == "" {
+			return Episode{}, fmt.Errorf("chapter %d: title is empty", i)
+		}
+		if ch.Start < 0 {
+			return Episode{}, fmt.Errorf("chapter %d: start is negative", i)
+		}
+		if ch.Stop < 0 {
+			return Episode{}, fmt.Errorf("chapter %d: stop is negative", i)
+		}
+		if ch.Stop != 0 && ch.Start >= ch.Stop {
+			return Episode{}, fmt.Errorf("chapter %d: start is after stop", i)
+		}
+	}
 	return m, nil
 }
 
@@ -41,9 +58,9 @@ type Normalize struct {
 }
 
 type Chapter struct {
-	Filename string   `hcl:",label"`
-	Title    string   `hcl:"title"`
-	Gain     float64  `hcl:"gain,optional"`
-	Start    *float64 `hcl:"start,optional"`
-	Stop     *float64 `hcl:"stop,optional"`
+	Filename string  `hcl:",label"`
+	Title    string  `hcl:"title"`
+	Gain     float64 `hcl:"gain,optional"`
+	Start    float64 `hcl:"start,optional"`
+	Stop     float64 `hcl:"stop,optional"`
 }

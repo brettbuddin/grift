@@ -29,7 +29,7 @@ type List []Chapter
 
 // addFrame writes a table of contents frame, the chapter frames, and a total
 // length frame to the ID3 information.
-func (l List) addFrames(f *id3.File, track Track) {
+func (l List) addFrames(f id3.Tagger, track Track) {
 	// Remove previous table of contents and chapter frames.
 	f.DeleteFrames("CTOC")
 	f.DeleteFrames("CHAP")
@@ -88,7 +88,7 @@ type Chapter struct {
 }
 
 // addFrames writes a chapter frame to the ID3 information.
-func (c Chapter) addFrames(f *id3.File, offset int) {
+func (c Chapter) addFrames(f id3.Tagger, offset int) {
 	f.AddFrames(id3v2.NewChapterFrame(
 		id3v2.V23FrameTypeMap["CHAP"],
 		fmt.Sprintf("chp%d", offset+1),

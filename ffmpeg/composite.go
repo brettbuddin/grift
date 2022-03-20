@@ -137,11 +137,11 @@ func prepareChapters(ctx context.Context, env Environment, chapters ...manifest.
 			"-filter:a",
 			fmt.Sprintf("volume=%.2fdB", ch.Gain),
 		}
-		if ch.Start != nil {
-			args = append(args, "-ss", fmt.Sprintf("%f", *ch.Start))
+		if ch.Start != 0 {
+			args = append(args, "-ss", fmt.Sprintf("%f", ch.Start))
 		}
-		if ch.Stop != nil {
-			args = append(args, "-to", fmt.Sprintf("%f", *ch.Stop))
+		if ch.Stop != 0 {
+			args = append(args, "-to", fmt.Sprintf("%f", ch.Stop))
 		}
 		err := ffmpeg(ctx, env, append(args, prepared)...)
 		if err != nil {
